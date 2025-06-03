@@ -1,0 +1,4 @@
+# Terraform
+personal.auto.tfvars
+.terraform*
+terraform.*

@@ -1,0 +1,28 @@
+all:
+  hosts:
+    ${master_name}:
+      ansible_host: ${master_external_ip}
+%{ for worker in workers ~}
+    ${worker.name}:
+      ansible_host: ${worker.external_ip}
+%{ endfor ~}
+
+  children:
+    kube_control_plane:
+      hosts:
+        ${master_name}:
+
+    etcd:
+      children:
+        kube_control_plane:
+
+    kube_node:
+      hosts:
+%{ for worker in workers ~}
+        ${worker.name}:
+%{ endfor ~}
+      
+    k8s_cluster:
+      children:
+        kube_control_plane:
+        kube_node:
