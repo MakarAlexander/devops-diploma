@@ -9,6 +9,7 @@
     - [Создание тестового приложения](#создание-тестового-приложения)
     - [Решение](#решение-2)
     - [Подготовка cистемы мониторинга и деплой приложения](#подготовка-cистемы-мониторинга-и-деплой-приложения)
+    - [Решение](#решение-3)
     - [Деплой инфраструктуры в terraform pipeline](#деплой-инфраструктуры-в-terraform-pipeline)
     - [Установка и настройка CI/CD](#установка-и-настройка-cicd)
   - [Что необходимо для сдачи задания?](#что-необходимо-для-сдачи-задания)
@@ -574,6 +575,40 @@ ansible-playbook -i /home/alex/Documents/devops-diploma/terraform/inventory.yml 
 
 Способ выполнения:
 1. Воспользоваться пакетом [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus), который уже включает в себя [Kubernetes оператор](https://operatorhub.io/) для [grafana](https://grafana.com/), [prometheus](https://prometheus.io/), [alertmanager](https://github.com/prometheus/alertmanager) и [node_exporter](https://github.com/prometheus/node_exporter). Альтернативный вариант - использовать набор helm чартов от [bitnami](https://github.com/bitnami/charts/tree/main/bitnami).
+
+### Решение
+
+Установка мониторинга через helm. Сначала требуется установить ```helm``` на control-plane ноду
+```sh
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+```
+Создаем отдельное пространстов имен для мониторинга
+```sh
+kubectl create namespace project
+```
+Добавляем репозиторий helm c prometheus
+```sh
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+```
+Устанавливаем kube-prometheus-stack (установка Prometheus, Grafana, Alertmanager, node-exporter и kube-state-metrics)
+```sh
+helm install prometheus prometheus-community/kube-prometheus-stack -n project
+```
+![4-1](./images/helm_grafana.png)
+Добавление ```ingress``` и его установка
+```sh
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+```
+```sh
+helm install ingress-nginx ingress-nginx/ingress-nginx -n project
+```
+![4-2](./images/helm_ingress.png)
+Деплой приложения из образа makartsewalex98/static-nginx:init, деплой сущности ингресс и создание сервисной учетной записи для CI/CD GitHub Actions
+```sh
+kubectl apply -f deployment.yml
+kubectl apply -f ingress.yml
+kubectl apply -f sa_for_github.yml
+```
 
 ### Деплой инфраструктуры в terraform pipeline
 
