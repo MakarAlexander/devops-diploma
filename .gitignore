@@ -6,3 +6,6 @@ terraform.tfstate*
 # Ansible
 \kubespray
 inventory.yml
+
+# Static nginx
+\nginx-static
