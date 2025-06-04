@@ -1,4 +1,8 @@
 # Terraform
 personal.auto.tfvars
 .terraform*
-terraform.*
+terraform.tfstate*
+
+# Ansible
+*kubespray*
+inventory.yml

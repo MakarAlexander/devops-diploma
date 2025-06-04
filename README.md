@@ -257,6 +257,15 @@ terraform apply # Применяет изменения
 
 ```terraform destroy``` и ```terraform apply``` инициализируются без дополнительных действий
 
+Инициализация из папки ```bucket```
+![1-1](./images/bucket.png)
+Инициализация из папки ```terraform```
+![1-2](./images/terraform.png)
+Ресурсы, которые создались в ```yandex cloud```
+![1-3](./images/ya_init.png)
+Бекэнд конфигурация сохраняется в бакет
+![1-4](./images/backend_bucket.png)
+
 ---
 ### Создание Kubernetes кластера
 
@@ -515,8 +524,15 @@ pip3 install -r requirements.txt
 
 Запуск для прокатки ```Kubespray``` (inventory.yaml формируется автоматически за счёт шаблона [inventory.yml.tftpl](./templates/inventory.yml.tftpl) и выводу из [ansible.tf](./terraform/ansible.tf))
 ```sh
-ansible-playbook -i /home/alex/Documents/test/terraform/inventory.yml cluster.yml -b -v -u cloud-alex
+ansible-playbook -i /home/alex/Documents/devops-diploma/terraform/inventory.yml cluster.yml -b -v -u cloud-alex
 ```
+
+Вывод после прокатки ```Kubespray```
+![2-1](./images/kubespray.png)
+Вывод ```kube-config```
+![2-2](./images/kubeconfig.png)
+Вывод от ```kubectl```
+![2-3](./images/kubectl.png)
 
 ---
 ### Создание тестового приложения
