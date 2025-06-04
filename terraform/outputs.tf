@@ -40,3 +40,8 @@ output "worker_nodes" {
   ]
   description = "Worker nodes details"
 }
+
+# Load Balancer Outputs
+output "alb_external_ip" {
+  value = yandex_alb_load_balancer.k8s_balancer.listener[*].endpoint[*].address[*].external_ipv4_address[*].address
+}

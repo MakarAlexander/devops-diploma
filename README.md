@@ -559,7 +559,7 @@ ansible-playbook -i /home/alex/Documents/devops-diploma/terraform/inventory.yml 
 Создан [репозиторий](https://github.com/MakarAlexander/nginx-static) со статической страницей nginx, которая создается через ```Dockerfile``` на базе ```nginx:latest```
 ![3-1](./images/docker_build.png)
 Локальная проверка ```nginx```
-![3-2](./images/nginx.png)
+![3-2](./images/nginx_local.png)
 Добавление сборки в [```docker hub```](https://hub.docker.com/r/makartsewalex98/static-nginx/tags)
 ![3-3](./images/docker_hub.png)
 
@@ -603,12 +603,26 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm install ingress-nginx ingress-nginx/ingress-nginx -n project
 ```
 ![4-2](./images/helm_ingress.png)
+Пришлось добавить application-load-balancer.tf  и нужно изменить конфигурацию nginx-ingress
+```sh
+helm upgrade ingress-nginx ingress-nginx/ingress-nginx -n project \
+  --set controller.service.type=NodePort \
+  --set controller.service.nodePorts.http=30080
+```
 Деплой приложения из образа makartsewalex98/static-nginx:init, деплой сущности ингресс и создание сервисной учетной записи для CI/CD GitHub Actions
 ```sh
 kubectl apply -f deployment.yml
 kubectl apply -f ingress.yml
 kubectl apply -f sa_for_github.yml
 ```
+Требуется поменять DNS,cоздаем A-записи для домена, приложения и мониторинга, привяжу их к IP балансировщика
+![4-3](./images/DNS.png)
+Проверка ```grafana``` на 80 порту
+![4-4](./images/grafana.png)
+Проверка ```дашборда``` на предмет метрик k8s
+![4-5](./images/dashboard.png)
+Проверка ```nginx``` на 80 порту
+![4-6](./images/nginx.png)
 
 ### Деплой инфраструктуры в terraform pipeline
 
