@@ -7,6 +7,7 @@
     - [Создание Kubernetes кластера](#создание-kubernetes-кластера)
     - [Решение](#решение-1)
     - [Создание тестового приложения](#создание-тестового-приложения)
+    - [Решение](#решение-2)
     - [Подготовка cистемы мониторинга и деплой приложения](#подготовка-cистемы-мониторинга-и-деплой-приложения)
     - [Деплой инфраструктуры в terraform pipeline](#деплой-инфраструктуры-в-terraform-pipeline)
     - [Установка и настройка CI/CD](#установка-и-настройка-cicd)
@@ -551,6 +552,15 @@ ansible-playbook -i /home/alex/Documents/devops-diploma/terraform/inventory.yml 
 
 1. Git репозиторий с тестовым приложением и Dockerfile.
 2. Регистри с собранным docker image. В качестве регистри может быть DockerHub или [Yandex Container Registry](https://cloud.yandex.ru/services/container-registry), созданный также с помощью terraform.
+
+### Решение
+
+Создан [репозиторий](https://github.com/MakarAlexander/nginx-static) со статической страницей nginx, которая создается через ```Dockerfile``` на базе ```nginx:latest```
+![3-1](./images/docker_build.png)
+Локальная проверка ```nginx```
+![3-2](./images/nginx.png)
+Добавление сборки в [```docker hub```](https://hub.docker.com/r/makartsewalex98/static-nginx/tags)
+![3-3](./images/docker_hub.png)
 
 ---
 ### Подготовка cистемы мониторинга и деплой приложения
