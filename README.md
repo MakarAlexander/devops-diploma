@@ -603,7 +603,7 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm install ingress-nginx ingress-nginx/ingress-nginx -n project
 ```
 ![4-2](./images/helm_ingress.png)
-Пришлось добавить application-load-balancer.tf  и нужно изменить конфигурацию nginx-ingress
+Пришлось добавить [application-load-balancer.tf](./terraform/application-load-balancer.tf)  и нужно изменить конфигурацию nginx-ingress
 ```sh
 helm upgrade ingress-nginx ingress-nginx/ingress-nginx -n project \
   --set controller.service.type=NodePort \
@@ -615,7 +615,7 @@ kubectl apply -f deployment.yml
 kubectl apply -f ingress.yml
 kubectl apply -f sa_for_github.yml
 ```
-Требуется поменять DNS,cоздаем A-записи для домена, приложения и мониторинга, привяжу их к IP балансировщика
+Добавил [dns.tf](./terraform/dns.tf) для автоматического создания записей на основе ip адреса балансировщика
 ![4-3](./images/DNS.png)
 Проверка ```grafana``` на 80 порту
 ![4-4](./images/grafana.png)
